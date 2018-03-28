@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 
@@ -27,30 +27,31 @@ const upload = multer({
   },
   fileFilter: fileFilter
 });
+//var upload = multer({ dest: 'uploads/' });
 
-
-router.get("/", (req, res, next) => {
-    res.status(200).json({
-        message:'Product is fetched Successfully',
-    });
+router.get('/', (req, res, next) => {
+  res.status(200).json({
+    message: 'Product is fetched Successfully'
+  });
 });
 
-router.post("/", upload.array('productImage',10), (req, res, next) => {
-  const allFiles= req.files;
-  const fileName=[];
-  if(allFiles){
-    allFiles.forEach(function(file){
+router.post('/', upload.any(), (req, res, next) => {
+  console.log(req.body);
+  const allFiles = req.files;
+  const fileName = [];
+  if (allFiles) {
+    allFiles.forEach(function(file) {
       console.log(file);
-      fileName.push(file.originalname)
+      fileName.push(file.originalname);
     });
   }
-  const products={
-    name:req.body.name,
-    productImage:fileName
+  const products = {
+    name: req.body.name,
+    productImage: fileName
   };
   res.status(201).json({
-    message:'Product was Created Successfully',
-    productCreated:products
+    message: 'Product was Created Successfully',
+    productCreated: products
   });
 });
 
